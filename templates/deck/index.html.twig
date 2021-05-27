@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jeu de carte{% endblock %}
+
+{% block body %}
+    <div class="flex flex-col w-full">
+        <div class="p-4">
+            <p class="text-white text-2xl font-bold mb-2">1. Configuration</p>
+            {{ form_start(form) }}
+                <div class="flex flex-row">
+                    <div class="flex flex-col">
+                        {{ form_label(form.nbCards, 'Nombre de cartes :', {'label_attr': {'class': 'text-white mb-1'}}) }}
+                        <div class="flex flex-row">
+                            {{ form_widget(form.nbCards, {'attr': {'class': 'bg-white rounded-md py-3 px-3'}}) }}
+                            <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-md ml-2">Générer une main</button>
+                        </div>
+                        <div class="form-error">
+                            {{ form_errors(form.nbCards) }}
+                        </div>
+                    </div>
+
+                </div>
+            {{ form_end(form) }}
+        </div>
+        {% if colorsRule|length > 0  %}
+            <div class="p-4">
+                <p class="text-white text-2xl font-bold mb-2">1.1. Ordre aléatoire des couleurs</p>
+                <ul class="flex gap-2">
+                    {%  for color in colorsRule %}
+                        <li class="text-xl text-white">{{  color.symbol }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if valuesRule|length > 0  %}
+            <div class="p-4">
+                <p class="text-white text-2xl font-bold mb-2">1.2. Ordre aléatoire des valeurs</p>
+                <ul class="flex gap-2">
+                    {%  for value in valuesRule %}
+                        <li class="text-xl text-white">{{ value.value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if cards|length > 0  %}
+           <div class="p-4">
+               <p class="text-white text-2xl font-bold mb-2">2. Main non triée</p>
+               <div class="cards">
+                   {%  for card in cards %}
+                       <div class="card {{ card.color.color }}">
+                           <div class="start">
+                               <p class="value">{{ card.value.value }}</p>
+                               <p class="symbol">{{ card.color.symbol }}</p>
+                           </div>
+                           <div class="center">
+                               <p class="symbol">{{ card.color.symbol }}</p>
+                           </div>
+                           <div class="end">
+                               <p class="value">{{ card.color.symbol }}</p>
+                               <p class="symbol">{{ card.value.value }}</p>
+                           </div>
+                       </div>
+                   {% endfor %}
+               </div>
+           </div>
+        {% endif %}
+        {% if sortedCards|length > 0  %}
+            <div class="p-4">
+                <p class="text-white text-2xl font-bold mb-2">3. Main triée</p>
+                <div class="cards">
+                    {%  for card in sortedCards %}
+                        <div class="card {{ card.color.color }}">
+                            <div class="start">
+                                <p class="value">{{ card.value.value }}</p>
+                                <p class="symbol">{{ card.color.symbol }}</p>
+                            </div>
+                            <div class="center">
+                                <p class="symbol">{{ card.color.symbol }}</p>
+                            </div>
+                            <div class="end">
+                                <p class="value">{{ card.color.symbol }}</p>
+                                <p class="symbol">{{ card.value.value }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

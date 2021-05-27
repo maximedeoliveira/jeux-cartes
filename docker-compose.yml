@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+    php-fpm:
+        container_name: php-fpm-cartes
+        build:
+            context: .
+            dockerfile: docker/php-fpm/Dockerfile
+        environment:
+            - APP_ENV=${APP_ENV}
+            - APP_SECRET=${APP_SECRET}
+        volumes:
+            - .:/var/www
+
+    nginx:
+        container_name: nginx-cartes
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        volumes:
+            - .:/var/www
+        depends_on:
+            - php-fpm
+        ports:
+            - "80:80"
+            - "443:443"
+
+
+    node:
+        container_name: node-cartes
+        build:
+            context: .
+            dockerfile: docker/node/Dockerfile
+        volumes:
+            - ./:/app/:rw,cached
+            - /app/node_modules
+        ports:
+            - "8080:8080"
